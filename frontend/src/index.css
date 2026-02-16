@@ -1,0 +1,646 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Amber Monitor — 1980s warm terminal */
+  :root {
+    --background: 30 12% 6%;
+    --foreground: 40 40% 92%;
+    --card: 30 10% 9%;
+    --card-foreground: 40 40% 92%;
+    --primary: 38 90% 50%;
+    --primary-foreground: 30 12% 6%;
+    --secondary: 30 12% 14%;
+    --secondary-foreground: 40 40% 92%;
+    --muted: 30 8% 18%;
+    --muted-foreground: 35 20% 50%;
+    --accent: 25 70% 42%;
+    --accent-foreground: 40 40% 92%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 40 40% 92%;
+    --border: 30 10% 16%;
+    --input: 30 10% 16%;
+    --ring: 38 90% 50%;
+    --radius: 0px;
+
+    /* RPG Color Palette */
+    --rpg-hp: 0 85% 55%;
+    --rpg-mp: 190 90% 55%;
+    --rpg-heal: 140 70% 45%;
+    --rpg-gold: 45 95% 55%;
+    --rpg-rare: 270 70% 60%;
+    --rpg-xp: 55 90% 50%;
+
+    /* 3D specific variables */
+    --perspective: 1200px;
+  }
+
+  .light {
+    --background: 40 30% 96%;
+    --foreground: 30 20% 12%;
+    --card: 40 20% 98%;
+    --card-foreground: 30 20% 12%;
+    --primary: 35 85% 42%;
+    --primary-foreground: 40 30% 96%;
+    --secondary: 35 15% 90%;
+    --secondary-foreground: 30 20% 12%;
+    --muted: 35 12% 85%;
+    --muted-foreground: 30 15% 40%;
+    --accent: 25 65% 35%;
+    --accent-foreground: 40 30% 96%;
+    --border: 35 15% 82%;
+    --input: 35 15% 82%;
+
+    --rpg-hp: 0 75% 45%;
+    --rpg-mp: 190 80% 40%;
+    --rpg-heal: 140 60% 35%;
+    --rpg-gold: 45 85% 45%;
+    --rpg-rare: 270 60% 50%;
+    --rpg-xp: 55 80% 40%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-primary/40 text-primary-foreground;
+  }
+
+  /* CRT Scanlines — subtle horizontal banding */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 6px
+    );
+  }
+
+  /* CRT Vignette — darkened tube edges */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/40;
+    border: 1px solid hsl(var(--primary) / 0.6);
+  }
+}
+
+@layer components {
+  /* 3D Card System */
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .card-3d:hover {
+    transform: translateZ(30px) rotateX(2deg) rotateY(-2deg);
+  }
+
+  /* Pixel Depth Shadow */
+  .depth-shadow {
+    box-shadow:
+      4px 4px 0 0 hsl(var(--primary) / 0.15),
+      2px 2px 0 0 hsl(var(--primary) / 0.1);
+  }
+
+  .depth-shadow-lg {
+    box-shadow:
+      6px 6px 0 0 hsl(var(--primary) / 0.2),
+      4px 4px 0 0 hsl(var(--primary) / 0.12),
+      2px 2px 0 0 hsl(var(--primary) / 0.08);
+  }
+
+  /* SNES Pixel Panel (replaces glassmorphism) */
+  .glass-3d {
+    background: hsl(var(--card) / 0.95);
+    border: 2px solid hsl(var(--primary) / 0.4);
+    box-shadow:
+      inset 2px 2px 0 0 hsl(var(--primary) / 0.2),
+      inset -2px -2px 0 0 hsl(var(--primary) / 0.08),
+      4px 4px 0 0 hsl(var(--primary) / 0.1);
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+
+  .glass {
+    @apply bg-card/90 border-2 border-primary/30;
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+
+  .glass-strong {
+    @apply bg-card/95 border-2 border-primary/40;
+    border-radius: 0;
+    backdrop-filter: none;
+    box-shadow:
+      inset 2px 2px 0 0 hsl(var(--primary) / 0.25),
+      inset -2px -2px 0 0 hsl(var(--primary) / 0.1);
+  }
+
+  /* Pixel Border — stepped corners */
+  .pixel-border {
+    border: 2px solid hsl(var(--primary) / 0.5);
+    box-shadow:
+      inset 1px 1px 0 0 hsl(var(--primary) / 0.2),
+      inset -1px -1px 0 0 hsl(var(--primary) / 0.08);
+    border-radius: 0;
+  }
+
+  /* SNES RPG Menu Panel — double border with 3D bevel */
+  .pixel-panel {
+    position: relative;
+    background: hsl(var(--card) / 0.95);
+    border: 3px solid hsl(var(--section-accent, var(--primary)) / 0.6);
+    outline: 3px solid hsl(var(--section-accent, var(--primary)) / 0.2);
+    outline-offset: 3px;
+    box-shadow:
+      inset 2px 2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.3),
+      inset -2px -2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.1),
+      0 0 20px hsl(var(--section-accent, var(--primary)) / 0.08);
+    border-radius: 0;
+  }
+
+  .pixel-panel-active {
+    border-color: hsl(var(--section-accent, var(--primary)));
+    outline-color: hsl(var(--section-accent, var(--primary)) / 0.4);
+    box-shadow:
+      inset 2px 2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.4),
+      inset -2px -2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.15),
+      0 0 30px hsl(var(--section-accent, var(--primary)) / 0.15);
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+
+  .text-gradient-animated {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% auto;
+    animation: gradient-shift 3s linear infinite;
+  }
+
+  /* Retro Scanline Shimmer */
+  .holographic {
+    background: repeating-linear-gradient(
+      0deg,
+      hsl(var(--primary) / 0.05) 0px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+
+  /* Pixel Glow */
+  .glow {
+    box-shadow:
+      0 0 0 1px hsl(var(--primary) / 0.3),
+      0 0 8px hsl(var(--primary) / 0.2),
+      0 0 16px hsl(var(--primary) / 0.1);
+  }
+
+  .glow-strong {
+    box-shadow:
+      0 0 0 2px hsl(var(--primary) / 0.4),
+      0 0 12px hsl(var(--primary) / 0.25),
+      0 0 24px hsl(var(--primary) / 0.12);
+  }
+
+  .glow-accent {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.3),
+      0 0 8px hsl(var(--accent) / 0.2),
+      0 0 16px hsl(var(--accent) / 0.1);
+  }
+
+  .neon-text {
+    text-shadow:
+      0 0 4px hsl(var(--primary) / 0.6),
+      0 0 8px hsl(var(--primary) / 0.3);
+  }
+
+  .title-glow {
+    animation: titleColorCycle 8s ease-in-out infinite;
+  }
+
+  @keyframes titleColorCycle {
+    0%, 100% { text-shadow: 0 0 6px hsl(var(--rpg-gold) / 0.5), 0 0 12px hsl(var(--rpg-gold) / 0.2); color: hsl(var(--rpg-gold)); }
+    20% { text-shadow: 0 0 6px hsl(var(--rpg-mp) / 0.5), 0 0 12px hsl(var(--rpg-mp) / 0.2); color: hsl(var(--rpg-mp)); }
+    40% { text-shadow: 0 0 6px hsl(var(--rpg-heal) / 0.5), 0 0 12px hsl(var(--rpg-heal) / 0.2); color: hsl(var(--rpg-heal)); }
+    60% { text-shadow: 0 0 6px hsl(var(--rpg-rare) / 0.5), 0 0 12px hsl(var(--rpg-rare) / 0.2); color: hsl(var(--rpg-rare)); }
+    80% { text-shadow: 0 0 6px hsl(var(--rpg-hp) / 0.5), 0 0 12px hsl(var(--rpg-hp) / 0.2); color: hsl(var(--rpg-hp)); }
+  }
+
+  /* Mesh Gradient Background */
+  .mesh-gradient {
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(at 40% 20%, hsl(38 90% 50% / 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsl(28 60% 40% / 0.06) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsl(30 65% 45% / 0.07) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, hsl(32 50% 45% / 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(35 75% 48% / 0.06) 0px, transparent 50%);
+  }
+
+  /* Floating Card */
+  .float-card {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .float-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      4px 4px 0 0 hsl(var(--primary) / 0.15);
+  }
+
+  /* Perspective Grid */
+  .perspective-grid {
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.12) 2px, transparent 2px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.12) 2px, transparent 2px);
+    background-size: 32px 32px;
+  }
+
+  /* Chips/Tags */
+  .chip {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium;
+    background: hsl(var(--primary) / 0.15);
+    border: 1px solid hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary));
+  }
+
+  /* Pixelation for images */
+  .pixelate {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  /* RPG Dialog Box — NPC text box style */
+  .rpg-dialog {
+    position: relative;
+    background: hsl(var(--background) / 0.95);
+    border: 3px solid hsl(var(--section-accent, var(--primary)) / 0.6);
+    outline: 2px solid hsl(var(--section-accent, var(--primary)) / 0.15);
+    outline-offset: 3px;
+    padding: 1rem 1.25rem;
+    box-shadow:
+      inset 2px 2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.2),
+      inset -2px -2px 0 0 hsl(var(--section-accent, var(--primary)) / 0.06);
+  }
+
+  /* RPG Menu Item — selectable with ► cursor */
+  .rpg-menu-item {
+    position: relative;
+    padding: 0.75rem 1rem 0.75rem 2rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: hsl(var(--foreground) / 0.7);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    -webkit-font-smoothing: none;
+  }
+
+  .rpg-menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .rpg-menu-item:hover,
+  .rpg-menu-item.active {
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.08);
+  }
+
+  .rpg-menu-item:hover::before,
+  .rpg-menu-item.active::before {
+    border-left-color: hsl(var(--primary));
+  }
+
+  /* RPG Segmented Bar — colored variants */
+  .rpg-bar {
+    display: flex;
+    gap: 2px;
+    height: 12px;
+  }
+
+  .rpg-bar-segment {
+    flex: 1;
+    transition: opacity 0.2s;
+  }
+
+  .rpg-bar-hp .rpg-bar-segment.filled { background: hsl(var(--rpg-hp)); }
+  .rpg-bar-hp .rpg-bar-segment.empty { background: hsl(var(--rpg-hp) / 0.15); }
+  .rpg-bar-mp .rpg-bar-segment.filled { background: hsl(var(--rpg-mp)); }
+  .rpg-bar-mp .rpg-bar-segment.empty { background: hsl(var(--rpg-mp) / 0.15); }
+  .rpg-bar-heal .rpg-bar-segment.filled { background: hsl(var(--rpg-heal)); }
+  .rpg-bar-heal .rpg-bar-segment.empty { background: hsl(var(--rpg-heal) / 0.15); }
+  .rpg-bar-xp .rpg-bar-segment.filled { background: hsl(var(--rpg-xp)); }
+  .rpg-bar-xp .rpg-bar-segment.empty { background: hsl(var(--rpg-xp) / 0.15); }
+  .rpg-bar-rare .rpg-bar-segment.filled { background: hsl(var(--rpg-rare)); }
+  .rpg-bar-rare .rpg-bar-segment.empty { background: hsl(var(--rpg-rare) / 0.15); }
+  .rpg-bar-gold .rpg-bar-segment.filled { background: hsl(var(--rpg-gold)); }
+  .rpg-bar-gold .rpg-bar-segment.empty { background: hsl(var(--rpg-gold) / 0.15); }
+
+  /* Save Crystal glow animation */
+  @keyframes crystal-pulse {
+    0%, 100% {
+      box-shadow:
+        0 0 8px hsl(var(--rpg-mp) / 0.4),
+        0 0 16px hsl(var(--rpg-mp) / 0.2),
+        0 0 32px hsl(var(--rpg-mp) / 0.1);
+      filter: brightness(1);
+    }
+    50% {
+      box-shadow:
+        0 0 12px hsl(var(--rpg-mp) / 0.6),
+        0 0 24px hsl(var(--rpg-mp) / 0.3),
+        0 0 48px hsl(var(--rpg-mp) / 0.15);
+      filter: brightness(1.2);
+    }
+  }
+
+  .save-crystal {
+    animation: crystal-pulse 2s ease-in-out infinite;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .perspective {
+    perspective: var(--perspective);
+  }
+}
+
+@layer utilities {
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-700 { animation-delay: 700ms; }
+  .delay-1000 { animation-delay: 1000ms; }
+
+  .font-display {
+    font-family: 'Press Start 2P', cursive;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+  }
+
+  .font-body {
+    font-family: 'VT323', monospace;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .writing-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px currentColor;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-stroke-2 {
+    -webkit-text-stroke: 2px currentColor;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes holographic-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-20px) translateZ(20px); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+}
+
+@keyframes reveal-3d {
+  from {
+    opacity: 0;
+    transform: translateY(80px) translateZ(-100px) rotateX(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0) rotateX(0);
+  }
+}
+
+@keyframes card-float {
+  0%, 100% {
+    transform: translateY(0) rotateX(0) rotateY(0);
+  }
+  25% {
+    transform: translateY(-5px) rotateX(1deg) rotateY(-1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(0) rotateY(1deg);
+  }
+  75% {
+    transform: translateY(-5px) rotateX(-1deg) rotateY(0);
+  }
+}
+
+@keyframes shimmer-3d {
+  0% {
+    background-position: -200% 0;
+    transform: translateZ(0);
+  }
+  50% {
+    transform: translateZ(10px);
+  }
+  100% {
+    background-position: 200% 0;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes depth-pulse {
+  0%, 100% {
+    transform: translateZ(0);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: translateZ(20px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Animation Classes */
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-orbit {
+  animation: orbit 20s linear infinite;
+}
+
+.animate-reveal-3d {
+  animation: reveal-3d 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-float {
+  animation: card-float 6s ease-in-out infinite;
+}
+
+.animate-depth-pulse {
+  animation: depth-pulse 4s ease-in-out infinite;
+}
+
+/* Noise Texture */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Gradient Border — pixel style */
+.gradient-border {
+  position: relative;
+  background: hsl(var(--card));
+  border: 2px solid hsl(var(--primary) / 0.5);
+  box-shadow: inset 1px 1px 0 0 hsl(var(--primary) / 0.15);
+}
+
+/* Custom Cursor */
+.cursor-none,
+.cursor-none * {
+  cursor: none !important;
+}
+
+/* Responsive 3D */
+@media (max-width: 768px) {
+  :root {
+    --perspective: 800px;
+  }
+
+  .card-3d:hover {
+    transform: translateZ(15px);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
