@@ -128,12 +128,14 @@ function SpaceInvadersCanvas() {
 
       // -- Invader formation (each row a different RPG color like the original) --
       const formationH = rows * (invH + gapY) - gapY;
+      const isLight = document.documentElement.classList.contains('light');
+      const a = isLight ? 0.35 : 0.14;
       const rowColors = [
-        'rgba(239, 68, 68, 0.14)',   // red (HP)
-        'rgba(168, 85, 247, 0.14)',  // purple (rare)
-        'rgba(34, 211, 238, 0.14)',  // cyan (MP)
-        'rgba(74, 222, 128, 0.14)', // green (heal)
-        'rgba(250, 204, 21, 0.14)', // gold
+        `rgba(239, 68, 68, ${a})`,   // red (HP)
+        `rgba(168, 85, 247, ${a})`,  // purple (rare)
+        `rgba(34, 211, 238, ${a})`,  // cyan (MP)
+        `rgba(74, 222, 128, ${a})`, // green (heal)
+        `rgba(250, 204, 21, ${a})`, // gold
       ];
       for (let r = 0; r < rows; r++) {
         const sprite = INVADER_SPRITES[r % INVADER_SPRITES.length];
@@ -162,7 +164,7 @@ function SpaceInvadersCanvas() {
       }
 
       // -- Enemy bullets (downward) --
-      ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+      ctx.fillStyle = isLight ? 'rgba(239, 68, 68, 0.45)' : 'rgba(239, 68, 68, 0.2)';
       for (let i = enemyBullets.length - 1; i >= 0; i--) {
         const b = enemyBullets[i];
         ctx.fillRect(b.x, b.y, 2, 6);
@@ -179,7 +181,7 @@ function SpaceInvadersCanvas() {
 
       // -- Player ship (green) --
       const shipY = ch - shipH - 90;
-      ctx.fillStyle = 'rgba(74, 222, 128, 0.18)';
+      ctx.fillStyle = isLight ? 'rgba(74, 222, 128, 0.4)' : 'rgba(74, 222, 128, 0.18)';
       drawSprite(SHIP_SPRITE, shipX, shipY);
 
       // Move ship back and forth
@@ -188,7 +190,7 @@ function SpaceInvadersCanvas() {
       if (shipX < 20) shipDir = 1;
 
       // -- Player bullets (upward, cyan) --
-      ctx.fillStyle = 'rgba(34, 211, 238, 0.3)';
+      ctx.fillStyle = isLight ? 'rgba(34, 211, 238, 0.55)' : 'rgba(34, 211, 238, 0.3)';
       for (let i = playerBullets.length - 1; i >= 0; i--) {
         const b = playerBullets[i];
         ctx.fillRect(b.x, b.y, 2, 8);
