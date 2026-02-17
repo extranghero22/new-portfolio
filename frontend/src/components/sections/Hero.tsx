@@ -58,12 +58,6 @@ function SpaceInvadersCanvas() {
     if (!ctx) return;
 
     let animId: number;
-    const px = 4;
-    const invW = 11 * px;
-    const invH = 8 * px;
-    const gapX = 22;
-    const gapY = 64;
-    const cols = 11;
     const rows = 5;
     const stepDown = 8;
     let dir = 1;
@@ -75,23 +69,46 @@ function SpaceInvadersCanvas() {
     const enemyBullets: { x: number; y: number }[] = [];
     const playerBullets: { x: number; y: number }[] = [];
 
-    // Player ship state
-    const shipW = 11 * px;
-    const shipH = 6 * px;
+    // Responsive values — recalculated on resize
+    let px = 4;
+    let cols = 11;
+    let gapX = 22;
+    let gapY = 64;
+    let invW = 11 * px;
+    let invH = 8 * px;
+    let shipW = 11 * px;
+    let shipH = 6 * px;
     let shipX = 0;
     let shipDir = 1;
     const shipSpeed = 0.7;
     let shootTimer = 0;
+    let formationW = 0;
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      shipX = canvas.width / 2 - shipW / 2;
+      const cw = canvas.width;
+
+      // Scale formation to fit screen width
+      if (cw < 480) {
+        px = 2; cols = 7; gapX = 8; gapY = 32;
+      } else if (cw < 768) {
+        px = 3; cols = 9; gapX = 14; gapY = 48;
+      } else {
+        px = 4; cols = 11; gapX = 22; gapY = 64;
+      }
+      invW = 11 * px;
+      invH = 8 * px;
+      shipW = 11 * px;
+      shipH = 6 * px;
+      formationW = cols * (invW + gapX) - gapX;
+
+      shipX = cw / 2 - shipW / 2;
+      // Reset formation position so it doesn't get stuck off-screen
+      offX = Math.max(0, Math.min(offX, cw - formationW - 40));
     };
     resize();
     window.addEventListener('resize', resize);
-
-    const formationW = cols * (invW + gapX) - gapX;
 
     const drawSprite = (sprite: number[][], x: number, y: number) => {
       for (let r = 0; r < sprite.length; r++) {
@@ -132,14 +149,16 @@ function SpaceInvadersCanvas() {
 
       // Move formation
       offX += speed * dir;
-      if (offX > maxOff || offX < 0) {
+      const safeMaxOff = Math.max(0, maxOff);
+      if (offX > safeMaxOff || offX < 0) {
         dir *= -1;
+        offX = Math.max(0, Math.min(offX, safeMaxOff));
         offY += stepDown;
       }
       // Reset when the formation scrolls off the bottom
       if (offY > ch - formationH * 0.3) {
         offY = -formationH;
-        offX = Math.random() * Math.max(0, maxOff * 0.5);
+        offX = Math.random() * safeMaxOff * 0.5;
       }
 
       // -- Enemy bullets (downward) --
