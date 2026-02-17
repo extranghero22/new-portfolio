@@ -87,7 +87,7 @@ function QuestDetail({ project }: { project: Project }) {
       </div>
 
       {/* Image + Info side by side */}
-      <div className="grid md:grid-cols-[1fr_1fr] gap-4 mb-4">
+      <div className="grid md:grid-cols-[3fr_2fr] gap-4 mb-4">
         {/* Project Image */}
         <div className="border-2 border-rpg-rare/20 overflow-hidden">
           <img
@@ -101,7 +101,7 @@ function QuestDetail({ project }: { project: Project }) {
         <div className="flex flex-col gap-3">
           {/* Description as RPG dialog */}
           <div className="rpg-dialog flex-1">
-            <p className="text-foreground/70 text-[13px] leading-relaxed">
+            <p className="text-foreground/70 text-[15px] leading-relaxed">
               {project.longDescription}
             </p>
           </div>
