@@ -142,7 +142,7 @@ function StatBar({
       transition={{ duration: 0.4, delay }}
     >
       <div className="flex items-center gap-3 mb-1">
-        <span className="font-display text-[7px] tracking-wider text-foreground/60 w-8">{label}</span>
+        <span className="font-display text-[9px] tracking-wider text-foreground/60 w-8">{label}</span>
         <div className={`rpg-bar flex-1 ${colorClass}`}>
           {Array.from({ length: TOTAL_SEGMENTS }).map((_, i) => (
             <motion.div
@@ -154,7 +154,7 @@ function StatBar({
             />
           ))}
         </div>
-        <span className="font-display text-[7px] text-foreground/40 w-16 text-right whitespace-nowrap">
+        <span className="font-display text-[9px] text-foreground/40 w-16 text-right whitespace-nowrap">
           {value}/{max}
         </span>
       </div>
@@ -206,9 +206,9 @@ export function About() {
         className="container mx-auto px-4 mb-8"
       >
         <div className="flex items-center gap-3 mb-2">
-          <span className="font-display text-[8px] text-rpg-mp/50 tracking-widest">02</span>
+          <span className="font-display text-[10px] text-rpg-mp/50 tracking-widest">02</span>
           <div className="w-8 h-px bg-rpg-mp/20" />
-          <span className="font-display text-[8px] text-foreground/40 tracking-widest">CHARACTER STATUS</span>
+          <span className="font-display text-[10px] text-foreground/40 tracking-widest">CHARACTER STATUS</span>
         </div>
       </motion.div>
 
@@ -233,13 +233,13 @@ export function About() {
               {/* Name plate */}
               <div className="text-center mb-4">
                 <h2 className="font-display text-pixel-sm text-rpg-mp mb-1">XANDER</h2>
-                <p className="font-display text-[7px] text-rpg-mp tracking-wider">FULL-STACK BATTLEMAGE</p>
+                <p className="font-display text-[9px] text-rpg-mp tracking-wider">FULL-STACK BATTLEMAGE</p>
               </div>
 
               {/* Level */}
               <div className="flex justify-between items-center px-2 py-2 border-t border-b border-rpg-mp/15">
-                <span className="font-display text-[7px] text-foreground/50">LEVEL</span>
-                <span className="font-display text-[10px] text-rpg-gold">26</span>
+                <span className="font-display text-[9px] text-foreground/50">LEVEL</span>
+                <span className="font-display text-[12px] text-rpg-gold">26</span>
               </div>
 
               {/* HP / MP / EXP bars */}
@@ -251,7 +251,7 @@ export function About() {
 
               {/* Achievements */}
               <div className="mt-5 pt-4 border-t border-rpg-mp/15">
-                <span className="font-display text-[7px] text-foreground/40 tracking-widest block mb-3">
+                <span className="font-display text-[9px] text-foreground/40 tracking-widest block mb-3">
                   ACHIEVEMENTS
                 </span>
                 <div className="grid grid-cols-2 gap-1.5">
@@ -263,8 +263,8 @@ export function About() {
                       transition={{ delay: 0.6 + i * 0.08 }}
                       className={`flex items-center gap-1.5 px-2 py-1.5 border ${a.bg}`}
                     >
-                      <span className={`${a.color} text-[10px]`}>{a.icon}</span>
-                      <span className={`font-display text-[6px] ${a.color} tracking-wider`}>{a.name}</span>
+                      <span className={`${a.color} text-[12px]`}>{a.icon}</span>
+                      <span className={`font-display text-[8px] ${a.color} tracking-wider`}>{a.name}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -281,7 +281,7 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <div className="pixel-panel p-5">
-                <h3 className="font-display text-[8px] text-foreground/50 tracking-widest mb-4 pb-2 border-b border-rpg-mp/15">
+                <h3 className="font-display text-[10px] text-foreground/50 tracking-widest mb-4 pb-2 border-b border-rpg-mp/15">
                   ATTRIBUTES
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -293,13 +293,13 @@ export function About() {
                       transition={{ delay: 0.4 + i * 0.08 }}
                       className="text-center p-3 border border-rpg-mp/10 hover:border-rpg-mp/30 transition-colors"
                     >
-                      <span className="font-display text-[7px] text-foreground/40 tracking-wider block mb-1">
+                      <span className="font-display text-[9px] text-foreground/40 tracking-wider block mb-1">
                         {stat.label}
                       </span>
                       <span className="font-display text-pixel-sm text-rpg-mp block mb-1">
                         {stat.value}
                       </span>
-                      <span className="text-[11px] text-foreground/30">
+                      <span className="text-[13px] text-foreground/30">
                         {stat.description}
                       </span>
                     </motion.div>
@@ -308,62 +308,67 @@ export function About() {
               </div>
             </motion.div>
 
-            {/* Equipment */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <div className="pixel-panel p-5">
-                <h3 className="font-display text-[8px] text-foreground/50 tracking-widest mb-4 pb-2 border-b border-rpg-mp/15">
-                  EQUIPMENT
-                </h3>
-                <div className="space-y-2">
-                  {equipment.map((item, i) => (
-                    <motion.div
-                      key={item.slot}
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={isInView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ delay: 0.6 + i * 0.08 }}
-                      className="flex items-center gap-3 px-3 py-2 hover:bg-rpg-mp/5 transition-colors"
-                    >
-                      <span className="font-display text-[7px] text-foreground/30 w-14 tracking-wider">
-                        {item.slot}
-                      </span>
-                      <span className="text-sm text-foreground/80 flex-1">
-                        {item.item}
-                      </span>
-                      <span className="font-display text-[7px] text-rpg-heal tracking-wider">
-                        {item.detail}
-                      </span>
-                    </motion.div>
-                  ))}
+            {/* Equipment + Bio side by side */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Equipment */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <div className="pixel-panel p-5 h-full">
+                  <h3 className="font-display text-[10px] text-foreground/50 tracking-widest mb-4 pb-2 border-b border-rpg-mp/15">
+                    EQUIPMENT
+                  </h3>
+                  <div className="space-y-2">
+                    {equipment.map((item, i) => (
+                      <motion.div
+                        key={item.slot}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ delay: 0.6 + i * 0.08 }}
+                        className="flex items-center gap-3 px-3 py-2 hover:bg-rpg-mp/5 transition-colors"
+                      >
+                        <span className="font-display text-[9px] text-foreground/30 w-16 tracking-wider">
+                          {item.slot}
+                        </span>
+                        <span className="text-sm text-foreground/80 flex-1">
+                          {item.item}
+                        </span>
+                        <span className="font-display text-[9px] text-rpg-heal tracking-wider">
+                          {item.detail}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* Bio Dialog */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.7 }}
-            >
-              <div className="rpg-dialog">
-                <p className="text-foreground/70 leading-relaxed text-[15px] inline">
-                  Full Stack Developer from the Philippines with a passion for building software that
-                  actually works. React and Golang are my main weapons — I've led teams, shipped
-                  platforms from scratch, and turned complex requirements into clean code. Quick
-                  learner who thrives under pressure. When I'm not coding, you'll find me gaming
-                  Wuthering Waves, riding motorcycles, or exploring Southeast Asia.
-                </p>
-                {/* Blinking cursor at end of dialog */}
-                <motion.span
-                  className="inline-block w-2 h-3 bg-rpg-mp/60 ml-1 align-middle"
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.6, repeat: Infinity }}
-                />
-              </div>
-            </motion.div>
+              {/* Bio Dialog */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                <div className="rpg-dialog h-full flex items-center">
+                  <div>
+                    <p className="text-foreground/70 leading-relaxed text-[15px] inline">
+                      Full Stack Developer from the Philippines with a passion for building software that
+                      actually works. React and Golang are my main weapons — I've led teams, shipped
+                      platforms from scratch, and turned complex requirements into clean code. Quick
+                      learner who thrives under pressure. When I'm not coding, you'll find me gaming
+                      Wuthering Waves, riding motorcycles, or exploring Southeast Asia.
+                    </p>
+                    {/* Blinking cursor at end of dialog */}
+                    <motion.span
+                      className="inline-block w-2 h-3 bg-rpg-mp/60 ml-1 align-middle"
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.6, repeat: Infinity }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>

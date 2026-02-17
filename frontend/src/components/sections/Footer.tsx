@@ -23,10 +23,10 @@ export function Footer() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-display text-pixel-xs md:text-pixel-sm text-rpg-gold/70 mb-4">
+          <h2 className="font-display text-pixel-sm md:text-pixel-md text-rpg-gold/80 mb-4">
             THANKS FOR PLAYING
           </h2>
-          <div className="w-32 h-px bg-rpg-gold/25 mx-auto" />
+          <div className="w-32 h-px bg-rpg-gold/40 mx-auto" />
         </motion.div>
 
         {/* Credits */}
@@ -37,9 +37,9 @@ export function Footer() {
           transition={{ delay: 0.2 }}
           className="text-center mb-12 space-y-3"
         >
-          <p className="font-display text-[7px] text-foreground/30 tracking-widest">DESIGNED & BUILT BY</p>
-          <p className="font-display text-[10px] text-foreground/60 tracking-wider">ALEXANDER VENUS</p>
-          <p className="font-display text-[7px] text-foreground/20 tracking-widest">USING REACT & TAILWIND CSS</p>
+          <p className="font-display text-[9px] text-foreground/50 tracking-widest">DESIGNED & BUILT BY</p>
+          <p className="font-display text-[12px] text-foreground/70 tracking-wider">ALEXANDER VENUS</p>
+          <p className="font-display text-[9px] text-foreground/40 tracking-widest">USING REACT & TAILWIND CSS</p>
         </motion.div>
 
         {/* Bonus Content (Social Links) */}
@@ -50,7 +50,7 @@ export function Footer() {
           transition={{ delay: 0.3 }}
           className="text-center mb-10"
         >
-          <p className="font-display text-[7px] text-rpg-rare/40 tracking-widest mb-4">BONUS CONTENT</p>
+          <p className="font-display text-[9px] text-rpg-rare/60 tracking-widest mb-4">BONUS CONTENT</p>
           <div className="flex justify-center gap-3">
             {socialLinks.map((social, index) => (
               <motion.button
@@ -63,7 +63,7 @@ export function Footer() {
                 whileHover={{ y: -2 }}
                 className="p-3 pixel-border hover:glow transition-all duration-300 group"
               >
-                <social.icon className={`w-4 h-4 text-foreground/30 ${social.color} transition-colors`} />
+                <social.icon className={`w-5 h-5 text-foreground/50 ${social.color} transition-colors`} />
               </motion.button>
             ))}
           </div>
@@ -78,11 +78,11 @@ export function Footer() {
           className="text-center mb-8"
         >
           <div className="flex items-center justify-center gap-2">
-            <p className="font-display text-pixel-xs text-rpg-heal/25 tracking-wider">
+            <p className="font-display text-pixel-xs text-rpg-heal/50 tracking-wider">
               THE END
             </p>
             <motion.span
-              className="inline-block w-2 h-3 bg-rpg-heal/25"
+              className="inline-block w-2 h-3 bg-rpg-heal/50"
               animate={{ opacity: [1, 0] }}
               transition={{ duration: 0.8, repeat: Infinity }}
             />
@@ -91,14 +91,14 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex justify-between items-center pt-6 border-t border-primary/8">
-          <span className="font-display text-[7px] text-foreground/15 tracking-widest">
+          <span className="font-display text-[9px] text-foreground/35 tracking-widest">
             &copy; {new Date().getFullYear()} XANDER.DEV
           </span>
 
           <motion.button
             onClick={scrollToTop}
             whileHover={{ y: -2 }}
-            className="flex items-center gap-2 font-display text-[7px] text-foreground/20 hover:text-rpg-mp transition-colors tracking-wider"
+            className="flex items-center gap-2 font-display text-[9px] text-foreground/40 hover:text-rpg-mp transition-colors tracking-wider"
           >
             RETURN TO TITLE
             <ArrowUp className="w-3 h-3" />
