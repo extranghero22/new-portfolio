@@ -320,7 +320,7 @@ export function About() {
                   <h3 className="font-display text-[10px] text-foreground/50 tracking-widest mb-4 pb-2 border-b border-rpg-mp/15">
                     CHARACTER BACKGROUND
                   </h3>
-                  <p className="text-foreground/70 leading-relaxed text-base inline">
+                  <p className="text-foreground/70 leading-relaxed text-lg inline">
                     Full Stack Developer from the Philippines with a passion for building software that
                     actually works. React and Golang are my main weapons — I've led teams, shipped
                     platforms from scratch, and turned complex requirements into clean code. Quick
