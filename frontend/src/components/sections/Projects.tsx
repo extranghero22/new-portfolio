@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
+import { useSetAtom } from 'jotai';
 import { projects, type Project } from '../../data/projects';
 import { useInView } from '../../hooks/useInView';
+import { activeMinigameAtom } from '../../store/atoms';
 
 function getQuestStatus(project: Project) {
   if (project.featured) return { label: 'LEGENDARY', color: 'text-rpg-rare', bg: 'bg-rpg-rare/15 border-rpg-rare/30' };
@@ -174,6 +176,7 @@ function QuestDetail({ project }: { project: Project }) {
 export function Projects() {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id);
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const setActiveMinigame = useSetAtom(activeMinigameAtom);
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId) || projects[0];
 
@@ -205,9 +208,12 @@ export function Projects() {
           {/* Left: Quest List */}
           <div className="border-r border-rpg-rare/15 h-full overflow-y-auto">
             <div className="px-4 py-3 border-b border-rpg-rare/15 bg-rpg-rare/5">
-              <span className="font-display text-[7px] text-foreground/40 tracking-widest">
+              <button
+                onClick={() => setActiveMinigame('breakout')}
+                className="font-display text-[7px] text-foreground/40 tracking-widest hover:text-rpg-rare/50 transition-colors cursor-default"
+              >
                 QUESTS — {projects.length}
-              </span>
+              </button>
             </div>
             {projects.map((project, index) => (
               <QuestListItem

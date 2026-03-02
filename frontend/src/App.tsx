@@ -12,6 +12,9 @@ import { Hero, About, Projects, Skills, Contact, Footer } from './components/sec
 // Effects Components
 import { CustomCursor, ScrollProgress, GradientBackground, KonamiToast } from './components/effects';
 
+// Minigames
+import { MinigameModal } from './components/minigames';
+
 // Store
 import { isLoadingAtom } from './store/atoms';
 
@@ -76,8 +79,9 @@ function PortfolioContent() {
             {/* Footer */}
             <Footer />
 
-            {/* Easter Egg */}
+            {/* Easter Eggs */}
             <KonamiToast />
+            <MinigameModal />
           </motion.div>
         )}
       </AnimatePresence>

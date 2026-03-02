@@ -8,11 +8,15 @@ RPG/SNES-themed personal portfolio website with a retro pixel/CRT aesthetic. Fro
 
 ## Commands
 
-### Frontend (`cd frontend`)
-- **Dev server**: `npm run dev` (runs on http://localhost:5173 with HMR)
+All commands run from `frontend/` directory:
+- **Dev server**: `npm run dev` (http://localhost:5173 with HMR)
 - **Build**: `npm run build` (runs `tsc -b && vite build`, output in `frontend/dist/`)
 - **Lint**: `npm run lint` (ESLint flat config with TypeScript + React rules)
 - **Preview**: `npm run preview`
+
+## Deployment
+
+Netlify deploys from `frontend/` directory. SPA fallback redirect (`/* → /index.html`) configured in `netlify.toml`. Build command and publish dir are set there — no Netlify UI overrides needed.
 
 ## Architecture
 
@@ -21,7 +25,7 @@ RPG/SNES-themed personal portfolio website with a retro pixel/CRT aesthetic. Fro
 - **Vite 7** for bundling (no path aliases — all imports are relative)
 - **Tailwind CSS v3** with class-based dark mode and 21 custom keyframe animations in `tailwind.config.js`
 - **Framer Motion** for declarative animations and scroll-triggered effects
-- **Jotai** for global state (`frontend/src/store/atoms.ts`)
+- **Jotai** for global state (`frontend/src/store/atoms.ts`) — atoms for theme, nav, cursor variant, loading, scroll, project modal, contact form, sound, and reduced-motion
 - **React Router v7** — only `BrowserRouter` wrapper is used; navigation is hash-based scroll-into-view (`#home`, `#about`, etc.), not actual routing
 - **Shadcn/UI pattern**: Radix primitives (`dialog`, `tooltip`, `slot`) styled with Tailwind + CVA
 

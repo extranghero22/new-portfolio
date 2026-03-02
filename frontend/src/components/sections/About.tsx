@@ -1,6 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSetAtom } from 'jotai';
 import { useInView } from '../../hooks/useInView';
+import { activeMinigameAtom } from '../../store/atoms';
 
 // Pixel cat sprite palette: 0=transparent, 1=body, 2=eyes, 3=nose, 4=belly, 5=inner ear
 const CAT_PALETTE: (string | null)[] = [
@@ -108,11 +110,103 @@ function PixelCat() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="mx-auto mt-3"
-      style={{ imageRendering: 'pixelated' }}
-    />
+    <div className="w-fit mx-auto mt-3">
+      <canvas
+        ref={canvasRef}
+        style={{ imageRendering: 'pixelated' }}
+      />
+    </div>
+  );
+}
+
+// Uses the same cell size and rendering style as SnakeGame.tsx
+const SNAKE_CELL = 24;
+const SNAKE_LEN = 18;
+const SNAKE_H = SNAKE_CELL + 8;
+
+function PixelSnake({ onClick }: { onClick: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const widthRef = useRef(800);
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+
+    const resize = () => {
+      const w = container.clientWidth;
+      widthRef.current = w;
+      canvas.width = w * dpr;
+      canvas.height = SNAKE_H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
+
+    let frame = 0;
+    let raf: number;
+
+    const draw = () => {
+      const w = widthRef.current;
+      ctx.clearRect(0, 0, w, SNAKE_H);
+
+      const speed = 0.8;
+      const totalTravel = w + SNAKE_LEN * SNAKE_CELL * 2;
+      const headX = (frame * speed) % totalTravel;
+
+      for (let i = 0; i < SNAKE_LEN; i++) {
+        const x = headX - i * SNAKE_CELL;
+        const y = SNAKE_H / 2 - SNAKE_CELL / 2 + Math.sin((frame * 0.06) - i * 0.7) * 3;
+
+        if (x < -SNAKE_CELL || x > w + SNAKE_CELL) continue;
+
+        const isHead = i === 0;
+        ctx.fillStyle = isHead ? 'hsl(140 70% 50%)' : 'hsl(140 70% 45%)';
+        ctx.fillRect(Math.round(x) + 2, Math.round(y) + 2, SNAKE_CELL - 4, SNAKE_CELL - 4);
+
+        if (isHead) {
+          ctx.fillStyle = 'rgba(255,255,255,0.15)';
+          ctx.fillRect(Math.round(x) + 2, Math.round(y) + 2, SNAKE_CELL - 4, 2);
+        }
+      }
+
+      frame++;
+      raf = requestAnimationFrame(draw);
+    };
+
+    raf = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full cursor-pointer opacity-25 hover:opacity-60 transition-opacity"
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{ width: '100%', height: SNAKE_H, imageRendering: 'pixelated' }}
+      />
+      {hovered && (
+        <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 font-display text-[6px] text-rpg-heal/50 tracking-widest whitespace-nowrap">
+          PLAY?
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -190,6 +284,7 @@ const equipment = [
 
 export function About() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const setActiveMinigame = useSetAtom(activeMinigameAtom);
 
   return (
     <section
@@ -307,6 +402,11 @@ export function About() {
                 </div>
               </div>
             </motion.div>
+
+            {/* Snake easter egg */}
+            <div className="hidden md:flex justify-center overflow-hidden py-2">
+              <PixelSnake onClick={() => setActiveMinigame('snake')} />
+            </div>
 
             {/* Bio + Equipment side by side */}
             <div className="grid lg:grid-cols-2 gap-6">

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSetAtom } from 'jotai';
 import { useInView } from '../../hooks/useInView';
 import { skillCategories, experiences, type SkillCategory } from '../../data/skills';
+import { activeMinigameAtom } from '../../store/atoms';
 
 const TOTAL_SEGMENTS = 20;
 
@@ -126,6 +128,7 @@ function BattleLogEntry({
 export function Skills() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1, triggerOnce: true });
   const [activeTab, setActiveTab] = useState<'skills' | 'experience'>('skills');
+  const setActiveMinigame = useSetAtom(activeMinigameAtom);
 
   return (
     <section id="skills" className="relative py-24 md:py-32 overflow-hidden bg-background" style={{ '--section-accent': 'var(--rpg-heal)' } as React.CSSProperties}>
@@ -140,7 +143,12 @@ export function Skills() {
         <div className="flex items-center gap-3 mb-2">
           <span className="font-display text-[8px] text-rpg-heal/50 tracking-widest">04</span>
           <div className="w-8 h-px bg-rpg-heal/20" />
-          <span className="font-display text-[8px] text-foreground/40 tracking-widest">INVENTORY</span>
+          <button
+            onClick={() => setActiveMinigame('tetris')}
+            className="font-display text-[8px] text-foreground/40 tracking-widest hover:text-foreground/60 transition-colors cursor-default"
+          >
+            INVENTORY
+          </button>
         </div>
       </motion.div>
 

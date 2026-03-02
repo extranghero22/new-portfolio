@@ -37,3 +37,7 @@ export const isSoundEnabledAtom = atom(false);
 
 // Animation preferences
 export const reducedMotionAtom = atom(false);
+
+// Minigame state
+export type MinigameId = 'snake' | 'tetris' | 'breakout';
+export const activeMinigameAtom = atom<MinigameId | null>(null);
